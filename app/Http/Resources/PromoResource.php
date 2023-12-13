@@ -14,6 +14,11 @@ class PromoResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'promo_id' => $this->promo_id,
+            'name' => $this->name,
+            'promo_code' => $this->promo_code,
+            'promo_exp' => $this->promo_exp
+        ];
     }
 }

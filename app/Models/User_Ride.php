@@ -10,5 +10,5 @@ class User_Ride extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $fillable = ['driver_id', 'name'];
+    protected $fillable = ['ur_id', 'ride_id', 'passanger_id', 'review', 'price'];
 }

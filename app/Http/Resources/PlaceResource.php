@@ -14,6 +14,11 @@ class PlaceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'place_id' => $this->place_id,
+            'user_id' => $this->user_id,
+            'name' => $this->name,
+            'address' => $this->address
+        ];
     }
 }
