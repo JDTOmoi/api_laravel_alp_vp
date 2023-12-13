@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id('ur_id');
             $table->unsignedBigInteger('ride_id');
             $table->unsignedBigInteger('passanger_id');
+            $table->foreign('ride_id')->references('ride_id')->on('rides');
+            $table->foreign('passanger_id')->references('user_id')->on('users');
             $table->text('review');
             $table->integer('price');
         });
