@@ -3,10 +3,12 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
@@ -18,7 +20,6 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'user_id',
         'name',
         'email',
         'password',
@@ -45,4 +46,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function ur(): HasMany{
+        return $this->hasMany(User_Ride::class, 'passanger_id', 'user_id');
+    }
+
+    public function place(): BelongsTo{
+        return $this->belongsTo(Place::class, 'user_id', 'place_id');
+    }
 }
