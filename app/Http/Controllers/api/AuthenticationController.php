@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticationController extends Controller
 {

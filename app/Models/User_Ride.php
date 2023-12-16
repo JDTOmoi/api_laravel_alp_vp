@@ -11,7 +11,7 @@ class User_Ride extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $fillable = ['ride_id', 'passanger_id', 'review', 'price'];
+    protected $fillable = ['ride_id', 'passanger_id', 'review', 'promo_id', 'price'];
 
     public function passanger(): BelongsTo{
         return $this->belongsTo(User::class, 'passanger_id', 'user_id');
@@ -19,5 +19,9 @@ class User_Ride extends Model
 
     public function ride(): BelongsTo{
         return $this->belongsTo(Ride::class, 'ride_id', 'ride_id');
+    }
+
+    public function promo(): BelongsTo{
+        return $this->belongsTo(Promo::class, 'promo_id', 'promo_id');
     }
 }

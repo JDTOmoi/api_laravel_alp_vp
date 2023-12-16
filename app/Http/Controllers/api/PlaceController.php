@@ -22,7 +22,7 @@ class PlaceController extends Controller
             return [
                 'status' => Response::HTTP_OK,
                 'message' => "Success",
-                'data' => $user
+                'data' => $place
             ];
         }catch(Exception $e){
             return [
@@ -58,12 +58,12 @@ class PlaceController extends Controller
 
         return [
             'status' => Response::HTTP_NOT_FOUND,
-            'message' => "User not found",
+            'message' => "Place not found",
             'data' => []
         ];
     }
     public function deletePlace(Request $request) {
-        $place = User::where('place_id', $request->place_id)->first();
+        $place = Place::where('place_id', $request->place_id)->first();
         $place->delete();
 
         return [

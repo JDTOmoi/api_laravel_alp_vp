@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Crypt;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
@@ -36,7 +42,7 @@ class UserController extends Controller
 
     public function updateUser(Request $request){
         if(!empty($request->email)){
-            $user = User::where('user_id', $request->id)->first();
+            $user = User::where('user_id', $request->user_id)->first();
         }else{
             $user = User::where('email', $request->email)->first();
         }
@@ -70,7 +76,7 @@ class UserController extends Controller
         ];
     }
     public function deleteUser(Request $request) {
-        $user = User::where('user_id', $request->id)->first();
+        $user = User::where('user_id', $request->user_id)->first();
         $user->delete();
 
         return [

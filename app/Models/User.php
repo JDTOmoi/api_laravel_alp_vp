@@ -47,7 +47,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function ur(): HasMany{
+    public function urs(): HasMany{
         return $this->hasMany(User_Ride::class, 'passanger_id', 'user_id');
     }
 

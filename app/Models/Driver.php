@@ -11,9 +11,13 @@ class Driver extends Model
     use HasFactory;
     public $timestamps = false;
 
-    protected $fillable = ['name'];
+    protected $fillable = ['user_id'];
 
     public function rides(): HasMany{
         return $this->hasMany(Ride::class, 'driver_id', 'driver_id');
+    }
+
+    public function user(): BelongsTo{
+        return $this->belongsTo(User::class, 'user_id', 'user_id');
     }
 }

@@ -11,4 +11,8 @@ class Promo extends Model
     public $timestamps = false;
 
     protected $fillable = ['name', 'promo_code', 'promo_exp'];
+
+    public function urs(): HasMany{
+        return $this->hasMany(User_Ride::class, 'promo_id', 'promo_id');
+    }
 }

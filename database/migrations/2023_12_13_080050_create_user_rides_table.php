@@ -15,9 +15,11 @@ return new class extends Migration
             $table->id('ur_id');
             $table->unsignedBigInteger('ride_id');
             $table->unsignedBigInteger('passanger_id');
-            $table->foreign('ride_id')->references('ride_id')->on('rides');
-            $table->foreign('passanger_id')->references('user_id')->on('users');
+            $table->foreign('ride_id')->references('ride_id')->on('rides')->onDelete('cascade');
+            $table->foreign('passanger_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->text('review');
+            $table->unsignedBigInteger('promo_id');
+            $table->foreign('promo_id')->references('promo_id')->on('promos')->onDelete('cascade');
             $table->integer('price');
         });
     }

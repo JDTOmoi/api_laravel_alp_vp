@@ -19,6 +19,7 @@ class User_RideResource extends JsonResource
             'ride_id' => $this->ride_id,
             'passanger_id' => $this->passanger_id,
             'review' => $this->review,
+            'promo_id' => $this->promo_id,
             'price' => $this->price
         ];
     }
