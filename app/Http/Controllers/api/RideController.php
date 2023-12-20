@@ -16,7 +16,7 @@ class RideController extends Controller
         return RideResource::collection($rides);
     }
 
-    public function ListRide(){
+    public function ListRide(Request $request){
         $driver = Driver::where('driver_id', $request->driver_id)->first();
         $rides = $driver->rides()->get();
         return [
