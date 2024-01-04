@@ -6,6 +6,7 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\DriverResource;
+use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class DriverController extends Controller

@@ -7,6 +7,7 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RideResource;
+use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class RideController extends Controller

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResource;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Crypt;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,7 +25,7 @@ class UserController extends Controller
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->phone = $request->phone;
-            $user->driver = '0';
+            $user->driver = '1';
             $user->save();
             return [
                 'status' => Response::HTTP_OK,

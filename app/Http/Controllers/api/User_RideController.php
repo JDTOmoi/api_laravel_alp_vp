@@ -10,6 +10,7 @@ use App\Models\User_Ride;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\User_RideResource;
+use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class User_RideController extends Controller
@@ -52,9 +53,11 @@ class User_RideController extends Controller
     public function createUR(Request $request){
         try{
             $ur = new User_Ride();
-            $ur->passanger_id = $request->passanger_id;
-            $ur->review = $request->review;
             $ur->ride_id = $request->ride_id;
+            $ur->passanger_id = $request->passanger_id;
+            $ur->passenger_status = $request->passenger_status;
+            $ur->driver_status = $request->driver_status;
+            $ur->review = $request->review;
             $ur->promo_id = $request->promo_id;
             $ur->price = $request->price;
             $ur->save();
