@@ -15,12 +15,17 @@ return new class extends Migration
             $table->id('ride_id');
             $table->unsignedBigInteger('driver_id');
             $table->foreign('driver_id')->references('driver_id')->on('drivers')->onDelete('cascade');
-            $table->enum('status', ['0', '1', '2']); // 0 = standby, 1 = ongoing, 2 = finished
+            $table->enum('ride_status', ['0', '1', '2'])->default('0'); // 0 = standby, 1 = ongoing, 2 = finished
             $table->string('start_location');
             $table->string('destination_location');
+            $table->double('start_lat');
+            $table->double('start_lng');
+            $table->double('destination_lan');
+            $table->double('destination_lng');
+            $table->string('going_date');
             $table->string('going_time');
             $table->string('car_model');
-            $table->string('car_plate_number');
+            $table->string('car_capacity');
         });
     }
 

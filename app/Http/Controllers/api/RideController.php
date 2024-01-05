@@ -12,13 +12,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RideController extends Controller
 {
-    public function getAllRides(){
+    public function getAllRides()
+    {
         $rides = Ride::all();
         return $rides;
         // return RideResource::collection($rides);
     }
 
-    public function ListRide(Request $request){
+    public function ListRide(Request $request)
+    {
         $driver = Driver::where('driver_id', $request->driver_id)->first();
         $rides = $driver->rides()->get();
         return [
@@ -28,36 +30,100 @@ class RideController extends Controller
         ];
     }
 
-    public function createRide(Request $request){
-        try{
-            $ride = new Ride();
-            $ride->driver_id = $request->driver_id;
-            $ride->status = $request->status;
-            $ride->start_location = $request->start_location;
-            $ride->destination_location = $request->destination_location;
-            $ride->going_time = $request->going_time;
-            $ride->car_model = $request->car_model;
-            $ride->car_plate_number = $request->car_plate_number;
-            $ride->save();
-            return [
-                'status' => Response::HTTP_OK,
-                'message' => "Success",
-                'data' => $ride
-            ];
-        }catch(Exception $e){
+    public function createRide(Request $request)
+    {
+
+        $user_id = $request->user_id;
+        $driverId = Driver::where('user_id', $user_id);
+
+        if ($user_id != 0 && $user_id != null) {
+
+            try {
+                $ride = new Ride();
+                $ride->driver_id = $driverId;
+                $ride->status = $request->status;
+                $ride->start_location = $request->start_location;
+                $ride->destination_location = $request->destination_location;
+                $ride->lat = $request->lat;
+                $ride->lng = $request->lng;
+                $ride->going_date = $request->going_date;
+                $ride->going_time = $request->going_time;
+                $ride->car_model = $request->car_model;
+                $ride->car_capacity = $request->car_capacity;
+                $ride->save();
+                return [
+                    'status' => Response::HTTP_OK,
+                    'message' => "Success",
+                    'ride_id' => $ride->ride_id,
+                    'driver_id' => $ride->driver_id,
+                    'ride_status' => $ride->status,
+                    'start_location' => $ride->start_location,
+                    'destination_location' => $ride->destination_location,
+                    'start_lat' => $ride->start_lat,
+                    'start_lng' => $ride->start_lng,
+                    'destination_lat' => $ride->destination_lat,
+                    'destination_lng' => $ride->destination_lng,
+                    'going_date' => $ride->going_date,
+                    'going_time' => $ride->going_time,
+                    'car_model' => $ride->car_model,
+                    'car_capacity' => $ride->car_capacity
+
+                ];
+            } catch (Exception $e) {
+                return [
+                    'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'message' => $e->getMessage(),
+                    'data' => []
+                ];
+            }
+        } else {
             return [
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
-                'message' => $e->getMessage(),
+                'message' => "couldn't get user id in parameter.",
                 'data' => []
             ];
         }
     }
 
-    public function updateRide(Request $request){
+    public function getRideDetails(Request $request)
+    {
         $ride = Ride::where('ride_id', $request->ride_id)->first();
 
-        if(!empty($ride)){
-            try{
+        if (!empty($ride)) {
+            try {
+                return [
+                    'status' => Response::HTTP_OK,
+                    'message' => "Success",
+                    'ride_id' => $ride->ride_id,
+                    'driver_id' => $ride->driver_id,
+                    'ride_status' => $ride->status,
+                    'start_location' => $ride->start_location,
+                    'destination_location' => $ride->destination_location,
+                    'start_lat' => $ride->start_lat,
+                    'start_lng' => $ride->start_lng,
+                    'destination_lat' => $ride->destination_lat,
+                    'destination_lng' => $ride->destination_lng,
+                    'going_date' => $ride->going_date,
+                    'going_time' => $ride->going_time,
+                    'car_model' => $ride->car_model,
+                    'car_capacity' => $ride->car_capacity
+                ];
+            } catch (Exception $e) {
+                return [
+                    'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                    'message' => $e->getMessage(),
+                    'data' => []
+                ];
+            }
+        }
+    }
+
+    public function updateRide(Request $request)
+    {
+        $ride = Ride::where('ride_id', $request->ride_id)->first();
+
+        if (!empty($ride)) {
+            try {
                 $ride = new Ride();
                 $ride->driver_id = $request->driver_id;
                 $ride->status = $request->status;
@@ -72,7 +138,7 @@ class RideController extends Controller
                     'message' => "Success",
                     'data' => $ride
                 ];
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 return [
                     'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                     'message' => $e->getMessage(),
@@ -87,12 +153,13 @@ class RideController extends Controller
             'data' => []
         ];
     }
-    public function deleteRide(Request $request) {
+    public function deleteRide(Request $request)
+    {
         $ride = Ride::where('ride_id', $request->ride_id)->first();
         $ride->delete();
 
         return [
-            'status' =>Response::HTTP_OK,
+            'status' => Response::HTTP_OK,
             'message' => 'Success',
             'data' => $ride
         ];
