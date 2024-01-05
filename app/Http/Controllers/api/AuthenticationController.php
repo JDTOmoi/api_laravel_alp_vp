@@ -25,7 +25,11 @@ class AuthenticationController extends Controller
                     'message' => "Token Created",
                     // dd($user),
                     // dd($user->createToken('login')),
-                    'data' => $user->createToken('login')->plainTextToken
+                    "user_id" => $user->user_id,
+                    "name" => $user->name,
+                    "email" => $user->email,
+                    "phone" => $user->phone,
+                    "driver" => $user->driver
                 ];
             } else {
                 return [

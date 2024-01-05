@@ -77,7 +77,7 @@ Route::post('promo', [PromoController::class, 'createPromo']);
 Route::patch('promo', [PromoController::class, 'updatePromo']);
 Route::delete('promo', [PromoController::class, 'deletePromo']);
 Route::get('ride_all', [RideController::class, 'getAllRides']);
-Route::get('ride', [RideController::class, 'ListRide']);
+Route::get('ride', [RideController::class, 'getAllRides']);
 Route::post('ride', [RideController::class, 'createRide']);
 Route::patch('ride', [RideController::class, 'updateRide']);
 Route::delete('ride', [RideController::class, 'deleteRide']);

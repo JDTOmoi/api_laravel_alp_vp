@@ -14,7 +14,8 @@ class RideController extends Controller
 {
     public function getAllRides(){
         $rides = Ride::all();
-        return RideResource::collection($rides);
+        return $rides;
+        // return RideResource::collection($rides);
     }
 
     public function ListRide(Request $request){

@@ -15,12 +15,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class User_RideController extends Controller
 {
-    public function getAllURs(){
+    public function getAllURs()
+    {
         $urs = User_Ride::all();
         return User_RideResource::collection($urs);
     }
 
-    public function ListURByRide(Request $request){
+    public function ListURByRide(Request $request)
+    {
         $ride = Ride::where('ride_id', $request->ride_id)->first();
         $urs = $ride->urs()->get();
         return [
@@ -30,7 +32,8 @@ class User_RideController extends Controller
         ];
     }
 
-    public function ListURByPromo(Request $request){
+    public function ListURByPromo(Request $request)
+    {
         $promo = Promo::where('promo_id', $request->promo_id)->first();
         $urs = $promo->urs()->get();
         return [
@@ -40,7 +43,8 @@ class User_RideController extends Controller
         ];
     }
 
-    public function ListURByUser(Request $request){
+    public function ListURByUser(Request $request)
+    {
         $user = User::where('user_id', $request->user_id)->first();
         $urs = $user->urs()->get();
         return [
@@ -50,8 +54,9 @@ class User_RideController extends Controller
         ];
     }
 
-    public function createUR(Request $request){
-        try{
+    public function createUR(Request $request)
+    {
+        try {
             $ur = new User_Ride();
             $ur->ride_id = $request->ride_id;
             $ur->passanger_id = $request->passanger_id;
@@ -66,7 +71,7 @@ class User_RideController extends Controller
                 'message' => "Success",
                 'data' => $ur
             ];
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return [
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => $e->getMessage(),
@@ -75,11 +80,12 @@ class User_RideController extends Controller
         }
     }
 
-    public function updateUR(Request $request){
+    public function updateUR(Request $request)
+    {
         $ur = User_Ride::where('ur_id', $request->ur_id)->first();
 
-        if(!empty($ur)){
-            try{
+        if (!empty($ur)) {
+            try {
                 $ur = new User_Ride();
                 $ur->passanger_id = $request->passanger_id;
                 $ur->review = $request->review;
@@ -92,7 +98,7 @@ class User_RideController extends Controller
                     'message' => "Success",
                     'data' => $ur
                 ];
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 return [
                     'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                     'message' => $e->getMessage(),
@@ -107,12 +113,13 @@ class User_RideController extends Controller
             'data' => []
         ];
     }
-    public function deleteUR(Request $request) {
+    public function deleteUR(Request $request)
+    {
         $ur = User_Ride::where('ur_id', $request->ur_id)->first();
         $ur->delete();
 
         return [
-            'status' =>Response::HTTP_OK,
+            'status' => Response::HTTP_OK,
             'message' => 'Success',
             'data' => $ur
         ];
