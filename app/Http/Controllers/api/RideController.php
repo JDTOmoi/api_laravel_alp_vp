@@ -34,41 +34,50 @@ class RideController extends Controller
     {
 
         $user_id = $request->user_id;
-        $driverId = Driver::where('user_id', $user_id);
 
-        if ($user_id != 0 && $user_id != null) {
-
+        if ($user_id != -1 && $user_id != null) {
             try {
-                $ride = new Ride();
-                $ride->driver_id = $driverId;
-                $ride->status = $request->status;
-                $ride->start_location = $request->start_location;
-                $ride->destination_location = $request->destination_location;
-                $ride->lat = $request->lat;
-                $ride->lng = $request->lng;
-                $ride->going_date = $request->going_date;
-                $ride->going_time = $request->going_time;
-                $ride->car_model = $request->car_model;
-                $ride->car_capacity = $request->car_capacity;
-                $ride->save();
-                return [
-                    'status' => Response::HTTP_OK,
-                    'message' => "Success",
-                    'ride_id' => $ride->ride_id,
-                    'driver_id' => $ride->driver_id,
-                    'ride_status' => $ride->status,
-                    'start_location' => $ride->start_location,
-                    'destination_location' => $ride->destination_location,
-                    'start_lat' => $ride->start_lat,
-                    'start_lng' => $ride->start_lng,
-                    'destination_lat' => $ride->destination_lat,
-                    'destination_lng' => $ride->destination_lng,
-                    'going_date' => $ride->going_date,
-                    'going_time' => $ride->going_time,
-                    'car_model' => $ride->car_model,
-                    'car_capacity' => $ride->car_capacity
+                $driver = Driver::where('user_id', $user_id)->first();
+                $driverId = $driver->user->user_id;
 
-                ];
+                if ($driver && $driverId != null) {
+                    $ride = new Ride();
+                    $ride->driver_id = $driverId;
+                    $ride->ride_status = "0";
+                    $ride->start_location = $request->start_location;
+                    $ride->destination_location = $request->destination_location;
+                    $ride->start_lat = $request->start_lat;
+                    $ride->start_lng = $request->start_lng;
+                    $ride->destination_lat = $request->destination_lat;
+                    $ride->destination_lng = $request->destination_lng;
+                    $ride->going_date = $request->going_date;
+                    $ride->going_time = $request->going_time;
+                    $ride->car_model = $request->car_model;
+                    $ride->car_capacity = $request->car_capacity;
+                    $ride->save();
+                    return [
+                        'status' => Response::HTTP_OK,
+                        'message' => "Success",
+                        'ride_id' => $ride->ride_id,
+                        'driver_id' => $ride->driver_id,
+                        'ride_status' => $ride->status,
+                        'start_location' => $ride->start_location,
+                        'destination_location' => $ride->destination_location,
+                        'start_lat' => $ride->start_lat,
+                        'start_lng' => $ride->start_lng,
+                        'destination_lat' => $ride->destination_lat,
+                        'destination_lng' => $ride->destination_lng,
+                        'going_date' => $ride->going_date,
+                        'going_time' => $ride->going_time,
+                        'car_model' => $ride->car_model,
+                        'car_capacity' => $ride->car_capacity
+                    ];
+                } else {
+                    return [
+                        'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                        'message' => "Driver not found"
+                    ];
+                }
             } catch (Exception $e) {
                 return [
                     'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
@@ -85,9 +94,9 @@ class RideController extends Controller
         }
     }
 
-    public function getRideDetails(Request $request)
+    public function getRideDetails(Request $request, $rideId)
     {
-        $ride = Ride::where('ride_id', $request->ride_id)->first();
+        $ride = Ride::where('ride_id', $rideId)->first();
 
         if (!empty($ride)) {
             try {
@@ -115,6 +124,11 @@ class RideController extends Controller
                     'data' => []
                 ];
             }
+        } else {
+            return [
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => "no ride found"
+            ];
         }
     }
 

@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('destination_location');
             $table->double('start_lat');
             $table->double('start_lng');
-            $table->double('destination_lan');
+            $table->double('destination_lat');
             $table->double('destination_lng');
             $table->string('going_date');
             $table->string('going_time');
