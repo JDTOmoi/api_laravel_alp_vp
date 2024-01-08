@@ -5,9 +5,8 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 
-class DatabaseSeeder extends Seeder
+class DriveSeeder extends Seeder
 {
     /**
      * Seed the application's database.
@@ -21,16 +20,12 @@ class DatabaseSeeder extends Seeder
         //     'email' => 'test@example.com',
         // ]);
 
-        DB::table('users')->insert([
-            'name' => 'driver',
-            'email' => "driver@email.com",
-            'password' => Hash::make("1234"),
-            'phone' => "08123456789",
-            'driver' => "1"
-        ]);
         DB::table('drivers')->insert([
-            'driver_id' => 1,
-            'user_id' => 1
+            'driver_id'=>1,
+            'user_id'=>1
         ]);
+
+        
+
     }
 }

@@ -13,26 +13,48 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function getAllUser(){
+
+    public function checkUser(Request $request)
+    {
+        $user = User::where('user_id', $request->user_id)->first();
+
+        if ($user != null) {
+            return [
+                'status' => Response::HTTP_OK,
+                'message' => 'Success',
+                'data' => $user->name
+            ];
+        } else {
+            return [
+                'status' => Response::HTTP_NOT_FOUND,
+                'message'=> 'No user found',
+                'data' => ''
+            ];
+        }
+    }
+
+    public function getAllUser()
+    {
         $users = User::all();
         return UserResource::collection($users);
     }
 
-    public function createUser(Request $request){
-        try{
+    public function createUser(Request $request)
+    {
+        try {
             $user = new User();
             $user->name = $request->name;
             $user->email = $request->email;
             $user->password = Hash::make($request->password);
             $user->phone = $request->phone;
-            $user->driver = '1';
+            $user->driver = $request->driver;
             $user->save();
             return [
                 'status' => Response::HTTP_OK,
                 'message' => "Success",
                 'data' => $user
             ];
-        }catch(Exception $e){
+        } catch (Exception $e) {
             return [
                 'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                 'message' => $e->getMessage(),
@@ -41,15 +63,16 @@ class UserController extends Controller
         }
     }
 
-    public function updateUser(Request $request){
-        if(!empty($request->email)){
+    public function updateUser(Request $request)
+    {
+        if (!empty($request->email)) {
             $user = User::where('user_id', $request->user_id)->first();
-        }else{
+        } else {
             $user = User::where('email', $request->email)->first();
         }
 
-        if(!empty($user)){
-            try{
+        if (!empty($user)) {
+            try {
                 $user = new User();
                 $user->name = $request->name;
                 $user->email = $request->email;
@@ -61,7 +84,7 @@ class UserController extends Controller
                     'message' => "Success",
                     'data' => $user
                 ];
-            }catch(Exception $e){
+            } catch (Exception $e) {
                 return [
                     'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
                     'message' => $e->getMessage(),
@@ -76,12 +99,13 @@ class UserController extends Controller
             'data' => []
         ];
     }
-    public function deleteUser(Request $request) {
+    public function deleteUser(Request $request)
+    {
         $user = User::where('user_id', $request->user_id)->first();
         $user->delete();
 
         return [
-            'status' =>Response::HTTP_OK,
+            'status' => Response::HTTP_OK,
             'message' => 'Success',
             'data' => $user
         ];

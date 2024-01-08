@@ -96,3 +96,4 @@ Route::patch('ur', [User_RideController::class, 'updateUR']);
 Route::delete('ur', [User_RideController::class, 'deleteUR']);
 
 Route::delete('logout', [AuthenticationController::class, 'logout']);
+Route::get('check-user', [UserController::class, 'checkUser']);
