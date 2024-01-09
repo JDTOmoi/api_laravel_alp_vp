@@ -7,6 +7,7 @@ use App\Models\Driver;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RideResource;
+use App\Models\User_Ride;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -53,7 +54,9 @@ class RideController extends Controller
                     $ride->going_date = $request->going_date;
                     $ride->going_time = $request->going_time;
                     $ride->car_model = $request->car_model;
+                    $ride->car_license_plate = $request->car_license_plate;
                     $ride->car_capacity = $request->car_capacity;
+                    $ride->notes = $request->notes;
                     $ride->save();
                     return [
                         'status' => Response::HTTP_OK,
@@ -70,7 +73,9 @@ class RideController extends Controller
                         'going_date' => $ride->going_date,
                         'going_time' => $ride->going_time,
                         'car_model' => $ride->car_model,
-                        'car_capacity' => $ride->car_capacity
+                        'car_license_plate' => $ride->car_license_plate,
+                        'car_capacity' => $ride->car_capacity,
+                        'notes' => $ride->notes
                     ];
                 } else {
                     return [
@@ -97,6 +102,23 @@ class RideController extends Controller
     public function getRideDetails(Request $request, $rideId)
     {
         $ride = Ride::where('ride_id', $rideId)->first();
+        // if ($ride != null) {
+
+        //     return [
+        //         'ride' => $ride->ride_id,
+        //         'driver_id' => $ride->driver_id
+        //     ];
+        // }
+
+        $driver = Driver::where('driver_id', $ride->driver_id)->first();
+        if ($driver == null) {
+            return [
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => 'cannot get driver in api',
+            ];
+        }
+        $user = $driver->user;
+        $total_entries = User_Ride::where('ride_id', $request->ride_id)->count();
 
         if (!empty($ride)) {
             try {
@@ -105,7 +127,9 @@ class RideController extends Controller
                     'message' => "Success",
                     'ride_id' => $ride->ride_id,
                     'driver_id' => $ride->driver_id,
-                    'ride_status' => $ride->status,
+                    'driver_name' => $user->name,
+                    'passengers' => $total_entries,
+                    'ride_status' => $ride->ride_status,
                     'start_location' => $ride->start_location,
                     'destination_location' => $ride->destination_location,
                     'start_lat' => $ride->start_lat,
@@ -115,7 +139,9 @@ class RideController extends Controller
                     'going_date' => $ride->going_date,
                     'going_time' => $ride->going_time,
                     'car_model' => $ride->car_model,
-                    'car_capacity' => $ride->car_capacity
+                    'car_license_plate' => $ride->car_license_plate,
+                    'car_capacity' => $ride->car_capacity,
+                    'notes' => $ride->notes
                 ];
             } catch (Exception $e) {
                 return [
