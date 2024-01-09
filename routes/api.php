@@ -86,6 +86,7 @@ Route::get('ride/{rideId}', [RideController::class, 'getRideDetails']);
 Route::post('ride', [RideController::class, 'createRide']);
 Route::patch('ride', [RideController::class, 'updateRide']);
 Route::delete('ride', [RideController::class, 'deleteRide']);
+Route::get('join-ride/{rideId}', [RideController::class, 'joinRide']);
 
 Route::get('ur', [User_RideController::class, 'getAllURs']);
 Route::get('ur_user', [User_RideController::class, 'ListURByUser']);

@@ -99,6 +99,25 @@ class RideController extends Controller
         }
     }
 
+    public function joinRide(Request $request, $rideId)
+    {
+        $ride = Ride::where('ride_id', $rideId)->first();
+
+        if ($ride != null) {
+
+            return [
+                'status' => Response::HTTP_OK,
+                'message' => "Success",
+                'ride_id' => $ride->ride_id
+            ];
+        } else {
+            return [
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => "Unnable to get ride id",
+            ];
+        }
+    }
+
     public function getRideDetails(Request $request, $rideId)
     {
         $ride = Ride::where('ride_id', $rideId)->first();
