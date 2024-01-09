@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Models\Ride;
 use App\Models\Driver;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\RideResource;
@@ -24,6 +25,19 @@ class RideController extends Controller
     {
         $driver = Driver::where('driver_id', $request->driver_id)->first();
         $rides = $driver->rides()->get();
+        return [
+            'status' => Response::HTTP_OK,
+            'message' => 'Success',
+            'data' => RideResource::collection($rides)
+        ];
+    }
+
+    public function ListRideByUser(Request $request)
+    {
+        $driver = User::where('user_id', $request->user_id)->first();
+        $rides = $driver->urs()->flatMap(function ($ur) {
+            return $ur->ride;
+        });
         return [
             'status' => Response::HTTP_OK,
             'message' => 'Success',
