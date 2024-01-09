@@ -25,7 +25,9 @@ return new class extends Migration
             $table->string('going_date');
             $table->string('going_time');
             $table->string('car_model');
+            $table->string('car_license_plate');
             $table->string('car_capacity');
+            $table->string('notes');
         });
     }
 
