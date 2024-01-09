@@ -62,6 +62,16 @@ class User_RideController extends Controller
             $ur->passanger_id = $request->passanger_id;
             $ur->passenger_status = $request->passenger_status;
             $ur->driver_status = $request->driver_status;
+
+            $ur->passenger_pickup_address = $request->passenger_pickup_address;
+            $ur->passenger_destination_address = $request->passenger_destination_address;
+
+            $ur->passenger_pickup_lat = $request->passenger_pickup_lat;
+            $ur->passenger_pickup_lng = $request->passenger_pickup_lng;
+
+            $ur->passenger_destination_lat = $request->passenger_destination_lat;
+            $ur->passenger_destination_lng = $request->passenger_destination_lng;
+
             $ur->review = $request->review;
             $ur->promo_id = $request->promo_id;
             $ur->price = $request->price;

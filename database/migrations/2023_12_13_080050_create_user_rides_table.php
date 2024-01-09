@@ -19,8 +19,18 @@ return new class extends Migration
             $table->foreign('passanger_id')->references('user_id')->on('users')->onDelete('cascade');
             $table->enum('passenger_status', ['0', '1']); //0 = submitted, 1 = accepted
             $table->enum('driver_status', ['0', '1', '2']); //0 = standby, 1 = ongoing, 2 = finished
-            $table->text('review');
-            $table->unsignedBigInteger('promo_id');
+
+            $table->string('passenger_pickup_address');
+            $table->string('passenger_destination_address');
+
+            $table->double('passenger_pickup_lat');
+            $table->double('passenger_pickup_lng');
+
+            $table->double('passenger_destination_lat');
+            $table->double('passenger_destination_lng');
+
+            $table->text('review')->nullable();
+            $table->unsignedBigInteger('promo_id')->nullable();
             $table->foreign('promo_id')->references('promo_id')->on('promos')->onDelete('cascade');
             $table->integer('price');
         });
