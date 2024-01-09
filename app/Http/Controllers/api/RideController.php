@@ -35,7 +35,9 @@ class RideController extends Controller
     public function ListRideByUser(Request $request)
     {
         $driver = User::where('user_id', $request->user_id)->first();
-        $rides = $driver->rides()->get();
+        $rides = $driver->urs()->flatMap(function ($ur) {
+            return $ur->ride;
+        });
         return [
             'status' => Response::HTTP_OK,
             'message' => 'Success',
