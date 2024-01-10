@@ -54,6 +54,16 @@ class User_RideController extends Controller
         ];
     }
 
+    public function DriverStandbyRideDetails() {
+        $urs = User::join('user_rides', 'users.user_id', '=', 'user_rides.passanger_id')->get();
+
+        return [
+            'status' => Response::HTTP_OK,
+            'message' => 'Success',
+            'data' => $urs
+        ];
+    }
+
     public function createUR(Request $request)
     {
         try {

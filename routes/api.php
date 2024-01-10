@@ -94,6 +94,7 @@ Route::get('ur', [User_RideController::class, 'getAllURs']);
 Route::get('ur_user', [User_RideController::class, 'ListURByUser']);
 Route::get('ur_ride', [User_RideController::class, 'ListURByRide']);
 Route::get('ur_promo', [User_RideController::class, 'ListURByPromo']);
+Route::get('ur_details', [User_RideController::class, 'DriverStandbyRideDetails']);
 Route::post('ur', [User_RideController::class, 'createUR']);
 Route::patch('ur', [User_RideController::class, 'updateUR']);
 Route::delete('ur', [User_RideController::class, 'deleteUR']);
