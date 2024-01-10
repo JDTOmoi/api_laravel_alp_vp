@@ -11,6 +11,7 @@ use App\Http\Resources\RideResource;
 use App\Models\User_Ride;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\DB;
 
 class RideController extends Controller
 {
@@ -32,17 +33,24 @@ class RideController extends Controller
         ];
     }
 
-    public function ListRideByUser(Request $request)
+    public function ListRideByUser(Request $request, $userId)
     {
-        $driver = User::where('user_id', $request->user_id)->first();
-        $rides = $driver->urs()->flatMap(function ($ur) {
-            return $ur->ride;
-        });
-        return [
-            'status' => Response::HTTP_OK,
-            'message' => 'Success',
-            'data' => RideResource::collection($rides)
-        ];
+
+        try {
+            $rides = DB::table('user_rides')->join('rides', 'rides.ride_id', '=', 'user_rides.ride_id')
+                ->select('user_rides.*', 'rides.*')
+                ->where('passanger_id', $userId)
+                ->get();
+
+
+            return $rides;
+        } catch (Exception $e) {
+            return [
+                'status' => Response::HTTP_INTERNAL_SERVER_ERROR,
+                'message' => $e->getMessage(),
+                'data' => []
+            ];
+        }
     }
 
     public function createRide(Request $request)
@@ -57,7 +65,7 @@ class RideController extends Controller
 
                 if ($driver && $driverId != null) {
                     $ride = new Ride();
-                    $ride->driver_id = $driverId;
+                    $ride->driver_id = $user_id;
                     $ride->ride_status = "0";
                     $ride->start_location = $request->start_location;
                     $ride->destination_location = $request->destination_location;
@@ -72,10 +80,12 @@ class RideController extends Controller
                     $ride->car_capacity = $request->car_capacity;
                     $ride->notes = $request->notes;
                     $ride->save();
+
+                    $ride_id = $ride->id;
                     return [
                         'status' => Response::HTTP_OK,
                         'message' => "Success",
-                        'ride_id' => $ride->ride_id,
+                        'ride_id' => $ride_id,
                         'driver_id' => $ride->driver_id,
                         'ride_status' => $ride->status,
                         'start_location' => $ride->start_location,

@@ -32,5 +32,10 @@ class DatabaseSeeder extends Seeder
             'driver_id' => 1,
             'user_id' => 1
         ]);
+        DB::table('promos')->insert([
+            'name' => 'Promo ALP',
+            'promo_code' => "alp",
+            'promo_exp' => "2024-1-1"
+        ]);
     }
 }
